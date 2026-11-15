@@ -1,0 +1,308 @@
+{
+  "info": {
+    "name": "HostelHub - CSE2D LG10",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Start the local HostelHub server and seed the four sample rooms before running in order."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    }
+  ],
+  "item": [
+    {
+      "name": "Page 1",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rooms?page=1&limit=2"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Page 1 contains the expected sample rooms\", () => {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.page).to.equal(1);",
+              "  pm.expect(body.data.map(room => room.name)).to.eql([\"101\",\"102\"]);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Page 2",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rooms?page=2&limit=2"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Page 2 contains the expected sample rooms\", () => {",
+              "  const body = pm.response.json();",
+              "  pm.expect(body.page).to.equal(2);",
+              "  pm.expect(body.data.map(room => room.name)).to.eql([\"201\",\"202\"]);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invalid page",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rooms?page=0"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Negative limit",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rooms?limit=-1"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rooms in block A",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rooms?block=A"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Available rooms in block A",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rooms?block=A&available=true"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Residents",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/residents"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Allotments with names",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/allotments"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create a test room",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/rooms",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Postman-{{$guid}}\",\"block\":\"Test\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "if (pm.response.code === 201) pm.collectionVariables.set(\"testRoomId\", pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Read test room",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rooms/{{testRoomId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update test room",
+      "request": {
+        "method": "PUT",
+        "url": "{{baseUrl}}/rooms/{{testRoomId}}",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Updated-{{$guid}}\",\"block\":\"Test\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reject empty room name",
+      "request": {
+        "method": "PUT",
+        "url": "{{baseUrl}}/rooms/{{testRoomId}}",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"\",\"block\":\"Test\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete test room",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/rooms/{{testRoomId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Verify deletion",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/rooms/{{testRoomId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
