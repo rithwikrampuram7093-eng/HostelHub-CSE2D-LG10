@@ -136,3 +136,9 @@ The allotments endpoint joins all three tables to show Asha in room 101, block A
 After room 101 is allotted, the available-room search for block A returns room 102.
 
 ![Available rooms in block A](screenshots/12-free-rooms-block-A.png)
+
+### Assignment question
+![HostelHub assignment card for CSE2D LG 10](screenshots/00-assignment-question.png)
+
+### Pagination code
+![GET rooms pagination code in server.js](screenshots/13-pagination-code.png)
