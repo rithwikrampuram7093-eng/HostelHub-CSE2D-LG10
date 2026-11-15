@@ -9,6 +9,15 @@
 
 HostelHub helps a hostel warden find free rooms in each block and see which resident occupies a room. The project uses Node.js, Express, and SQLite. Postman is used to test the API.
 
+## Live Demo
+
+[Open HostelHub on Render](https://hostelhub-cse2d-lg10.onrender.com)
+
+### Try the pagination tests
+
+- [Page 1 — rooms 101 and 102](https://hostelhub-cse2d-lg10.onrender.com/rooms?page=1&limit=2)
+- [Page 2 — rooms 201 and 202](https://hostelhub-cse2d-lg10.onrender.com/rooms?page=2&limit=2)
+- [Invalid page — expect 400 Bad Request](https://hostelhub-cse2d-lg10.onrender.com/rooms?page=0)
 ## LG 10 members and proposed roles
 
 | Member | Name | Roll number | Proposed role |
