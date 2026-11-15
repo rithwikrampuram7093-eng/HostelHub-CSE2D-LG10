@@ -74,3 +74,65 @@ The database is created automatically. The seed script adds rooms 101 and 102 in
 2. Import `HostelHub.postman_collection.json` into Postman.
 3. Run the collection in order. It uses `http://localhost:3000`.
 4. Check the HTTP status and response body for each request. Creating a room returns `201 Created`. Updating it returns `200 OK`. Deleting it returns `204 No Content`. Looking up the deleted room returns `404 Not Found`.
+
+## Project screenshots
+
+### 1. SQLite database tables
+The database contains three related tables: residents, rooms, and allotments.
+
+![SQLite database tables](screenshots/01-database-tables.png)
+
+### 2. Sample rooms
+The seed script adds rooms 101 and 102 in block A and rooms 201 and 202 in block B.
+
+![Four sample rooms](screenshots/02-sample-rooms.png)
+
+### 3. Pagination — first page
+With a limit of two, page 1 returns rooms 101 and 102.
+
+![First page of rooms](screenshots/03-rooms-page-1.png)
+
+### 4. Pagination — second page
+Page 2 returns the next two rooms, 201 and 202.
+
+![Second page of rooms](screenshots/04-rooms-page-2.png)
+
+### 5. Invalid page number
+Requesting page 0 returns a validation error.
+
+![Invalid page response](screenshots/05-invalid-page.png)
+
+### 6. Search by block
+Searching for block A returns rooms 101 and 102.
+
+![Rooms in block A](screenshots/06-search-block-A.png)
+
+### 7. Add a room
+Creating room 301 in block C returns 201 Created and the new room ID.
+
+![Add room response](screenshots/07-add-room.png)
+
+### 8. Validate room details
+An update with an empty room name returns 400 Bad Request.
+
+![Room validation response](screenshots/08-room-validation.png)
+
+### 9. Update a room
+The update changes the room name from 301 to 302.
+
+![Update room response](screenshots/09-update-room.png)
+
+### 10. Delete a room
+Deleting the test room returns 204 No Content.
+
+![Delete room response](screenshots/10-delete-room.png)
+
+### 11. Show resident and room names
+The allotments endpoint joins all three tables to show Asha in room 101, block A.
+
+![Allotments join result](screenshots/11-allotments-join.png)
+
+### 12. Find free rooms
+After room 101 is allotted, the available-room search for block A returns room 102.
+
+![Available rooms in block A](screenshots/12-free-rooms-block-A.png)
